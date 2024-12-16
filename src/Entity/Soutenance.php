@@ -20,19 +20,14 @@ class Soutenance
     #[ORM\Column(nullable: true)]
     private ?float $note = null;
 
-    // Relation ManyToMany avec Etudiant
-    #[ORM\ManyToMany(targetEntity: Etudiant::class, inversedBy: "soutenances")]
-    #[ORM\JoinTable(
-        name: "soutenances_etudiants",
-        joinColumns: [new ORM\JoinColumn(name: "numjury", referencedColumnName: "numjury", nullable: false)],
-        inverseJoinColumns: [ new ORM\JoinColumn(name: "NCE", referencedColumnName: "NCE", nullable: false)]
-    )]
+    #[ORM\ManyToOne(targetEntity: Enseignant::class, inversedBy: 'soutenances')]
+    #[ORM\JoinColumn(name: 'enseignant_id', referencedColumnName: 'Matricule', nullable: false)] // Ensures a Soutenance must have an Enseignant
+    private ?Enseignant $enseignant = null;
+
+    // Relation OneToMany avec Etudiant
+    #[ORM\OneToMany(mappedBy: 'soutenance', targetEntity: Etudiant::class)]
     private Collection $etudiants;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getNumjury(): ?int
     {
@@ -69,4 +64,45 @@ class Soutenance
 
         return $this;
     }
+
+    // Getter and Setter for enseignant
+    public function getEnseignant(): ?Enseignant
+    {
+        return $this->enseignant;
+    }
+
+    public function setEnseignant(?Enseignant $enseignant): self
+    {
+        $this->enseignant = $enseignant;
+
+        return $this;
+    }
+
+    // Getter pour les Etudiants
+    public function getEtudiants(): Collection
+    {
+        return $this->etudiants;
+    }
+
+    // Ajouter un étudiant à la soutenance
+    public function addEtudiant(Etudiant $etudiant): self
+    {
+        if (!$this->etudiants->contains($etudiant)) {
+            $this->etudiants->add($etudiant);
+            $etudiant->setSoutenance($this); // Met à jour le lien côté Etudiant
+        }
+        return $this;
+    }
+
+    // Retirer un étudiant de la soutenance
+    public function removeEtudiant(Etudiant $etudiant): self
+    {
+        if ($this->etudiants->removeElement($etudiant)) {
+            if ($etudiant->getSoutenance() === $this) {
+                $etudiant->setSoutenance(null);
+            }
+        }
+        return $this;
+    }
+
 }

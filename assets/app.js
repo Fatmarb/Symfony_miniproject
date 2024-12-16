@@ -9,6 +9,9 @@ import './styles/app.css';
 // assets/app.js
 import 'datatables.net-bs5';
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+import 'bootstrap-datepicker';
+import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
+
 
 // Initialize DataTables for tables with the `.datatable` class
 $(document).ready(function() {

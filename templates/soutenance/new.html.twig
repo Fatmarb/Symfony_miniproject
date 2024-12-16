@@ -1,11 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Soutenance{% endblock %}
+{% block title %}Ajouter une Soutenance{% endblock %}
 
 {% block body %}
-    <h1>Create new Soutenance</h1>
+    <h1>Nouvelle Soutenance</h1>
 
-    {{ include('soutenance/_form.html.twig') }}
+    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
 
-    <a href="{{ path('app_soutenance_index') }}">back to list</a>
+    <div class="mb-3">
+        {{ form_label(form.dateSoutenance) }}
+        {{ form_widget(form.dateSoutenance, {'attr': {'class': 'form-control js-datepicker'}}) }}
+        {{ form_errors(form.dateSoutenance) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.note) }}
+        {{ form_widget(form.note, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.note) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.enseignant) }}
+        {{ form_widget(form.enseignant, {'attr': {'class': 'form-select'}}) }}
+        {{ form_errors(form.enseignant) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.etudiants) }}
+        {{ form_widget(form.etudiants, {'attr': {'class': 'form-select', 'multiple': 'multiple'}}) }}
+        {{ form_errors(form.etudiants) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+
+    {{ form_end(form) }}
+
+    <!-- Include the Bootstrap date picker -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Bootstrap date picker
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
 {% endblock %}

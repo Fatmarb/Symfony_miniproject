@@ -2,10 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Etudiant;
 use App\Entity\Soutenance;
+use App\Entity\Etudiant;
+use App\Entity\Enseignant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,14 +18,17 @@ class SoutenanceType extends AbstractType
     {
         $builder
             ->add('date_soutenance', null, [
-                'widget' => 'single_text',
+                'widget' => 'single_text', // This enables the HTML5 date picker
+                'attr' => ['class' => 'form-control js-datepicker'], // Bootstrap calendar
                 'label' => 'Date de Soutenance',
                 'required' => true
             ])
             ->add('Note', NumberType::class,[
-                'label' => 'Score',
-                'attr' => [
-                'placeholder' => 'Entez la notre entre 0 et 20'],
+                'label' => 'Note',
+                'attr' => ['class' => 'form-control',
+                    'min' => 0,
+                    'max' => 20,
+                    'placeholder' => 'Entez la notre entre 0 et 20'],
                 'required' => true
             ])
             ->add('enseignant', EntityType::class, [
@@ -30,7 +36,9 @@ class SoutenanceType extends AbstractType
                 'choice_label' => function($etudiant) {
                                 return $etudiant->getNom() . ' ' . $etudiant->getPrenom(); // Affiche nom et prénom
                                 },
-                'label' => 'Enseignat'
+                'placeholder' => 'Sélectionnez un enseignant',
+                'attr' => ['class' => 'form-select'], // Bootstrap styling for select
+                'label' => 'Enseignant',
             ])
             ->add('etudiants', EntityType::class, [
                 'class' => Etudiant::class,
@@ -39,7 +47,8 @@ class SoutenanceType extends AbstractType
                                 },
                 'multiple' => true,
                 'expanded' => true,
-                'label' => 'Etudiants',
+                'attr' => ['class' => 'form-select'], // Bootstrap styling
+                'label' => 'Étudiants',
                 'required' => true
             ])
         ;

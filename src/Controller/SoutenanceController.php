@@ -37,7 +37,7 @@ final class SoutenanceController extends AbstractController{
 
         return $this->render('soutenance/new.html.twig', [
             'soutenance' => $soutenance,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

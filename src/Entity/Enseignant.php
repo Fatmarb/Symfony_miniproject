@@ -67,13 +67,6 @@ class Enseignant
         return $this->Matricule;
     }
 
-    public function setMatricule(int $Matricule): static
-    {
-        $this->Matricule = $Matricule;
-
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->Nom;

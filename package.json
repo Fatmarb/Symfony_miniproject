@@ -20,6 +20,7 @@
     "dependencies": {
         "@popperjs/core": "^2.11.8",
         "bootstrap": "^5.3.3",
+        "bootstrap-datepicker": "^1.10.0",
         "datatables.net": "^2.1.8",
         "datatables.net-bs5": "^2.1.8"
     }

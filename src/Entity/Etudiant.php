@@ -22,8 +22,9 @@ class Etudiant
     private ?string $Prenom = null;
 
     // Relation ManyToMany avec Soutenance
-    #[ORM\ManyToMany(targetEntity: Soutenance::class, mappedBy: "etudiants")]
-    private Collection $soutenances;
+    #[ORM\OneToOne(inversedBy: 'etudiant', targetEntity: Soutenance::class)]
+    #[ORM\JoinColumn(name: 'soutenance_numjury', referencedColumnName: 'numjury',nullable: false)]
+    private Soutenance $soutenance;
 
     // Constructeur pour initialiser la Collection
     public function __construct()
@@ -61,4 +62,17 @@ class Etudiant
 
         return $this;
     }
+    // Getter pour la Soutenance
+    public function getSoutenance(): Soutenance
+    {
+        return $this->soutenance;
+    }
+
+    // Setter pour la Soutenance
+    public function setSoutenance(Soutenance $soutenance): self
+    {
+        $this->soutenance = $soutenance;
+        return $this;
+    }
+
 }
