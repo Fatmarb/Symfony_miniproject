@@ -16,17 +16,31 @@ class SoutenanceType extends AbstractType
         $builder
             ->add('date_soutenance', null, [
                 'widget' => 'single_text',
-                'label' => 'Date de Soutenance'
+                'label' => 'Date de Soutenance',
+                'required' => true
             ])
             ->add('Note', NumberType::class,[
                 'label' => 'Score',
                 'attr' => [
                 'placeholder' => 'Entez la notre entre 0 et 20'],
+                'required' => true
+            ])
+            ->add('enseignant', EntityType::class, [
+                'class' => Enseignant::class,
+                'choice_label' => function($etudiant) {
+                                return $etudiant->getNom() . ' ' . $etudiant->getPrenom(); // Affiche nom et prénom
+                                },
+                'label' => 'Enseignat'
             ])
             ->add('etudiants', EntityType::class, [
                 'class' => Etudiant::class,
-                'choice_label' => 'id',
+                'choice_label' => function($etudiant) {
+                                return $etudiant->getNom() . ' ' . $etudiant->getPrenom(); // Affiche nom et prénom
+                                },
                 'multiple' => true,
+                'expanded' => true,
+                'label' => 'Etudiants',
+                'required' => true
             ])
         ;
     }

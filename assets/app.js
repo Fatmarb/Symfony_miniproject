@@ -6,5 +6,14 @@ import './bootstrap.js';
  * which should already be in your base.html.twig.
  */
 import './styles/app.css';
+// assets/app.js
+import 'datatables.net-bs5';
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
+// Initialize DataTables for tables with the `.datatable` class
+$(document).ready(function() {
+    $('.datatable').DataTable();
+});
+
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

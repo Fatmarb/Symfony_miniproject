@@ -18,8 +18,8 @@ class EtudiantType extends AbstractType
             ->add('Prenom')
             ->add('soutenances', EntityType::class, [
                 'class' => Soutenance::class,
-'choice_label' => 'id',
-'multiple' => true,
+                'choice_label' => 'id',
+                'multiple' => true,
             ])
         ;
     }
