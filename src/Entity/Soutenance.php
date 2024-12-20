@@ -11,28 +11,37 @@ class Soutenance
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column (type: 'integer')]
-    private ?int $numjury = null;
+    #[ORM\Column (name: 'numjury', type: 'integer')]
+    private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_soutenance = null;
 
     #[ORM\Column( type: 'float', nullable: true)]
+    #[Assert\NotBlank(message: 'The note field cannot be empty.')]
+    #[Assert\LessThanOrEqual(
+        value: 20,
+        message: 'The note must be less than or equal to 20.'
+    )]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'The note must be greater than or equal to 0.'
+    )]
     private ?float $note = null;
 
     #[ORM\ManyToOne(targetEntity: Enseignant::class, inversedBy: 'soutenances')]
-    #[ORM\JoinColumn(name: 'enseignant_id', referencedColumnName: 'Matricule', nullable: false)]
+    #[ORM\JoinColumn(name: 'enseignant_id', referencedColumnName: 'Matricule', nullable: false, onDelete: 'CASCADE')]
     private ?Enseignant $enseignant = null;
 
 
     #[ORM\ManyToOne(targetEntity: Etudiant::class, inversedBy: 'soutenances')]
-    #[ORM\JoinColumn(name: 'etudiant_id', referencedColumnName: 'NCE', nullable: false)]
+    #[ORM\JoinColumn(name: 'etudiant_id', referencedColumnName: 'NCE', nullable: false, onDelete: 'CASCADE')]
     private ?Etudiant $etudiant = null;
 
 
-    public function getNumjury(): ?int
+    public function getId(): ?int
     {
-        return $this->numjury;
+        return $this->id;
     }
 
     public function getDateSoutenance(): ?\DateTimeInterface

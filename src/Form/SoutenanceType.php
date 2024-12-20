@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SoutenanceType extends AbstractType
 {
@@ -25,16 +26,22 @@ class SoutenanceType extends AbstractType
                 'required' => true
             ])
             ->add('note', NumberType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'The note is required.']),
+                    new Assert\Range([
+                        'min' => 0,
+                        'max' => 20,
+                        'notInRangeMessage' => 'The note must be between {{ min }} and {{ max }}.',
+                    ]),
+                ],
                 'label' => 'Note',
                 'attr' => [
-                    'class' => 'form-control',
                     'min' => 0,
                     'max' => 20,
-                    'placeholder' => 'Entrez une note entre 0 et 20',
+                    'step' => 0.1,
+                    'placeholder' => 'Enter a note between 0 and 20',
                 ],
-                'required' => true,
             ])
-            
             ->add('enseignant', EntityType::class, [
                 'class' => Enseignant::class,
                 'choice_label' => function($enseignant) {

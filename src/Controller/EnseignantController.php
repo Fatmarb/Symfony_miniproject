@@ -44,7 +44,7 @@ final class EnseignantController extends AbstractController{
 
    
 
-    #[Route('/{matricule}/edit', name: 'app_enseignant_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_enseignant_edit', methods: ['GET', 'POST'])]
     public function edit(Enseignant $enseignant, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(EnseignantType::class, $enseignant);
@@ -63,14 +63,14 @@ final class EnseignantController extends AbstractController{
     }
 
 
-    #[Route('/{matricule}', name: 'app_enseignant_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_enseignant_delete', methods: ['POST'])]
     public function delete(Request $request, Enseignant $enseignant, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$enseignant->getMatricule(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$enseignant->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($enseignant);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_enseignant_show', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_enseignant_index', [], Response::HTTP_SEE_OTHER);
     }
 }

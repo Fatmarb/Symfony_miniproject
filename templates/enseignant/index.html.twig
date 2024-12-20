@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Matricule</th>
+                <th>id</th>
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>actions</th>
@@ -17,11 +17,12 @@
         <tbody>
         {% for enseignant in enseignants %}
             <tr>
-                <td>{{ enseignant.Matricule }}</td>
+                <td>{{ enseignant.id }}</td>
                 <td>{{ enseignant.Nom }}</td>
                 <td>{{ enseignant.Prenom }}</td>
                 <td>
-                    <a href="{{ path('app_enseignant_edit', {'matricule': enseignant.Matricule}) }}">edit</a>
+                    {{ include('enseignant/_delete_form.html.twig') }}
+                    <a href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

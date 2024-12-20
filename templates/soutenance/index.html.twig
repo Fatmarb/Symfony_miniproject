@@ -25,14 +25,14 @@
         <tbody>
         {% for soutenance in soutenances %}
             <tr>
-            <td>{{ soutenance.numjury }}</td>
+            <td>{{ soutenance.id}}</td>
             <td>{{ soutenance.enseignant.nom }} {{ soutenance.enseignant.prenom }}</td>
             <td>{{ soutenance.etudiant.nom }} {{ soutenance.etudiant.prenom }}</td>
             <td>{{ soutenance.dateSoutenance ? soutenance.dateSoutenance|date('Y-m-d') : '' }}</td>
             <td>{{ soutenance.note }}</td>
             <td>
                 {{ include('soutenance/_delete_form.html.twig') }}
-             <a class="btn btn-warning btn-sm" href="{{ path('app_soutenance_edit', {'numjury': soutenance.numjury}) }}">edit</a>
+                <a class="btn btn-warning btn-sm" href="{{ path('app_soutenance_edit', {'id': soutenance.id}) }}">edit</a>
             </td>
             </tr>
         {% else %}

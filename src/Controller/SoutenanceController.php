@@ -42,15 +42,9 @@ final class SoutenanceController extends AbstractController{
         ]);
     }
 
-    #[Route('/{numjury}', name: 'app_soutenance_show', methods: ['GET'])]
-    public function show(Soutenance $soutenance): Response
-    {
-        return $this->render('soutenance/show.html.twig', [
-            'soutenance' => $soutenance,
-        ]);
-    }
+    
 
-    #[Route('/{numjury}/edit', name: 'app_soutenance_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_soutenance_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Soutenance $soutenance, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SoutenanceType::class, $soutenance);
@@ -68,15 +62,14 @@ final class SoutenanceController extends AbstractController{
         ]);
     }
 
-    #[Route('/admin/{numjury}', name: 'app_soutenance_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/{id}', name: 'app_soutenance_delete', methods: ['POST'])]
     public function delete(Request $request, Soutenance $soutenance, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$soutenance->getNumjury(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$soutenance->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($soutenance);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_soutenance_show', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_soutenance_index', [], Response::HTTP_SEE_OTHER);
     }
 }
