@@ -12,13 +12,13 @@ class Enseignant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $Matricule = null;
+    #[ORM\Column(name:"Matricule", type: 'integer')]
+    private $matricule = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $Nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $Prenom = null;
 
 
@@ -64,7 +64,7 @@ class Enseignant
 
     public function getMatricule(): ?int
     {
-        return $this->Matricule;
+        return $this->matricule;
     }
 
     public function getNom(): ?string

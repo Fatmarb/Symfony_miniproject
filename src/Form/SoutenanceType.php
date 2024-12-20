@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SoutenanceType extends AbstractType
@@ -17,39 +18,40 @@ class SoutenanceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date_soutenance', null, [
-                'widget' => 'single_text', // This enables the HTML5 date picker
-                'attr' => ['class' => 'form-control js-datepicker'], // Bootstrap calendar
+            ->add('dateSoutenance', DateType::class, [
+                'widget' => 'single_text', 
+                'format' => 'yyyy-MM-dd', 
                 'label' => 'Date de Soutenance',
                 'required' => true
             ])
-            ->add('Note', NumberType::class,[
+            ->add('note', NumberType::class, [
                 'label' => 'Note',
-                'attr' => ['class' => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'min' => 0,
                     'max' => 20,
-                    'placeholder' => 'Entez la notre entre 0 et 20'],
-                'required' => true
+                    'placeholder' => 'Entrez une note entre 0 et 20',
+                ],
+                'required' => true,
             ])
+            
             ->add('enseignant', EntityType::class, [
                 'class' => Enseignant::class,
-                'choice_label' => function($etudiant) {
-                                return $etudiant->getNom() . ' ' . $etudiant->getPrenom(); // Affiche nom et prénom
+                'choice_label' => function($enseignant) {
+                                return $enseignant->getNom() . ' ' . $enseignant->getPrenom(); // Affiche nom et prénom
                                 },
                 'placeholder' => 'Sélectionnez un enseignant',
-                'attr' => ['class' => 'form-select'], // Bootstrap styling for select
+                'attr' => ['class' => 'form-select'], 
                 'label' => 'Enseignant',
             ])
-            ->add('etudiants', EntityType::class, [
+            ->add('etudiant', EntityType::class, [
                 'class' => Etudiant::class,
                 'choice_label' => function($etudiant) {
                                 return $etudiant->getNom() . ' ' . $etudiant->getPrenom(); // Affiche nom et prénom
                                 },
-                'multiple' => true,
-                'expanded' => true,
-                'attr' => ['class' => 'form-select'], // Bootstrap styling
-                'label' => 'Étudiants',
-                'required' => true
+                'placeholder' => 'Sélectionnez un etudiant',
+                'attr' => ['class' => 'form-select'], 
+                'label' => 'Etudiant',
             ])
         ;
     }

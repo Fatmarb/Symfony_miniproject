@@ -11,34 +11,28 @@ class Soutenance
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column (type: 'integer')]
     private ?int $numjury = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_soutenance = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column( type: 'float', nullable: true)]
     private ?float $note = null;
 
     #[ORM\ManyToOne(targetEntity: Enseignant::class, inversedBy: 'soutenances')]
-    #[ORM\JoinColumn(name: 'enseignant_id', referencedColumnName: 'Matricule', nullable: false)] // Ensures a Soutenance must have an Enseignant
+    #[ORM\JoinColumn(name: 'enseignant_id', referencedColumnName: 'Matricule', nullable: false)]
     private ?Enseignant $enseignant = null;
 
-    // Relation OneToMany avec Etudiant
-    #[ORM\OneToMany(mappedBy: 'soutenance', targetEntity: Etudiant::class)]
-    private Collection $etudiants;
+
+    #[ORM\ManyToOne(targetEntity: Etudiant::class, inversedBy: 'soutenances')]
+    #[ORM\JoinColumn(name: 'etudiant_id', referencedColumnName: 'NCE', nullable: false)]
+    private ?Etudiant $etudiant = null;
 
 
     public function getNumjury(): ?int
     {
         return $this->numjury;
-    }
-
-    public function setNumjury(int $numjury): static
-    {
-        $this->numjury = $numjury;
-
-        return $this;
     }
 
     public function getDateSoutenance(): ?\DateTimeInterface
@@ -53,17 +47,19 @@ class Soutenance
         return $this;
     }
 
+
+
     public function getNote(): ?float
     {
         return $this->note;
     }
 
-    public function setNote(?float $note): static
+    public function setNote(?float $note): self
     {
         $this->note = $note;
-
         return $this;
     }
+
 
     // Getter and Setter for enseignant
     public function getEnseignant(): ?Enseignant
@@ -78,17 +74,22 @@ class Soutenance
         return $this;
     }
 
-    // Getter pour les Etudiants
-    public function getEtudiants(): Collection
+    public function getEtudiant(): ?Etudiant
     {
-        return $this->etudiants;
+        return $this->etudiant;
     }
 
+    public function setEtudiant(?Etudiant $etudiant): self
+    {
+        $this->etudiant = $etudiant;
+
+        return $this;
+    }
     // Ajouter un étudiant à la soutenance
     public function addEtudiant(Etudiant $etudiant): self
     {
-        if (!$this->etudiants->contains($etudiant)) {
-            $this->etudiants->add($etudiant);
+        if (!$this->etudiant->contains($etudiant)) {
+            $this->etudiant->add($etudiant);
             $etudiant->setSoutenance($this); // Met à jour le lien côté Etudiant
         }
         return $this;
@@ -97,7 +98,7 @@ class Soutenance
     // Retirer un étudiant de la soutenance
     public function removeEtudiant(Etudiant $etudiant): self
     {
-        if ($this->etudiants->removeElement($etudiant)) {
+        if ($this->etudiant->removeElement($etudiant)) {
             if ($etudiant->getSoutenance() === $this) {
                 $etudiant->setSoutenance(null);
             }

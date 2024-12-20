@@ -16,11 +16,6 @@ class EtudiantType extends AbstractType
         $builder
             ->add('Nom')
             ->add('Prenom')
-            ->add('soutenances', EntityType::class, [
-                'class' => Soutenance::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
         ;
     }
 

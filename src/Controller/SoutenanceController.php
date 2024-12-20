@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/soutenance')]
 final class SoutenanceController extends AbstractController{
@@ -67,7 +68,8 @@ final class SoutenanceController extends AbstractController{
         ]);
     }
 
-    #[Route('/{numjury}', name: 'app_soutenance_delete', methods: ['POST'])]
+    #[Route('/admin/{numjury}', name: 'app_soutenance_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Soutenance $soutenance, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$soutenance->getNumjury(), $request->getPayload()->getString('_token'))) {
@@ -75,6 +77,6 @@ final class SoutenanceController extends AbstractController{
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_soutenance_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_soutenance_show', [], Response::HTTP_SEE_OTHER);
     }
 }

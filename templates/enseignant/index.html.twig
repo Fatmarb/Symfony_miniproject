@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Enseignant index{% endblock %}
+{% block title %}Enseignant List{% endblock %}
 
 {% block body %}
-    <h1>Enseignant index</h1>
+    <h1>Enseignant List</h1>
 
     <table class="table">
         <thead>
@@ -21,8 +21,7 @@
                 <td>{{ enseignant.Nom }}</td>
                 <td>{{ enseignant.Prenom }}</td>
                 <td>
-                    <a href="{{ path('app_enseignant_show', {'Matricule': enseignant.Matricule}) }}">show</a>
-                    <a href="{{ path('app_enseignant_edit', {'Matricule': enseignant.Matricule}) }}">edit</a>
+                    <a href="{{ path('app_enseignant_edit', {'matricule': enseignant.Matricule}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

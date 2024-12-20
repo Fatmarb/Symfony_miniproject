@@ -12,32 +12,53 @@ class Etudiant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $NCE = null;
+    #[ORM\Column (name: 'NCE', type: 'integer')]
+    private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string',length: 255)]
     private ?string $Nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $Prenom = null;
 
-    // Relation ManyToMany avec Soutenance
-    #[ORM\OneToOne(inversedBy: 'etudiant', targetEntity: Soutenance::class)]
-    #[ORM\JoinColumn(name: 'soutenance_numjury', referencedColumnName: 'numjury',nullable: false)]
-    private Soutenance $soutenance;
-
-    // Constructeur pour initialiser la Collection
+    #[ORM\OneToMany(mappedBy: 'etudiant', targetEntity: Soutenance::class)]
+    private Collection $soutenances; 
+    
     public function __construct()
     {
         $this->soutenances = new ArrayCollection();
     }
-
-    // Getters et Setters
-    public function getNCE(): ?int
+    
+    public function getSoutenances(): Collection
     {
-        return $this->NCE;
+        return $this->soutenances;
+    }
+    
+    public function addSoutenance(Soutenance $soutenance): self
+    {
+        if (!$this->soutenances->contains($soutenance)) {
+            $this->soutenances[] = $soutenance;
+            $soutenance->setEtudiant($this);
+        }
+    
+        return $this;
+    }
+    
+    public function removeSoutenance(Soutenance $soutenance): self
+    {
+        if ($this->soutenances->removeElement($soutenance)) {
+            if ($soutenance->getEtudiant() === $this) {
+                $soutenance->setEtudiant(null);
+            }
+        }
+    
+        return $this;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getNom(): ?string
     {
@@ -62,17 +83,6 @@ class Etudiant
 
         return $this;
     }
-    // Getter pour la Soutenance
-    public function getSoutenance(): Soutenance
-    {
-        return $this->soutenance;
-    }
-
-    // Setter pour la Soutenance
-    public function setSoutenance(Soutenance $soutenance): self
-    {
-        $this->soutenance = $soutenance;
-        return $this;
-    }
+   
 
 }

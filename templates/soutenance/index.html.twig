@@ -15,24 +15,29 @@
         <thead>
             <tr>
                 <th>Num jury</th>
+                <th>Enseignant</th>
+                <th>Etudiant</th>
                 <th>Date de Soutenance</th>
                 <th>Note</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for soutenance in soutenances %}
             <tr>
-                <td>{{ soutenance.numjury }}</td>
-                <td>{{ soutenance.dateSoutenance ? soutenance.dateSoutenance|date('Y-m-d') : '' }}</td>
-                <td>{{ soutenance.note }}</td>
-                <td>
-                    <a class="btn btn-primary btn-sm" href="{{ path('app_soutenance_show', {'numjury': soutenance.numjury}) }}">show</a>
-                    <a class="btn btn-warning btn-sm" href="{{ path('app_soutenance_edit', {'numjury': soutenance.numjury}) }}">edit</a>
-                </td>
+            <td>{{ soutenance.numjury }}</td>
+            <td>{{ soutenance.enseignant.nom }} {{ soutenance.enseignant.prenom }}</td>
+            <td>{{ soutenance.etudiant.nom }} {{ soutenance.etudiant.prenom }}</td>
+            <td>{{ soutenance.dateSoutenance ? soutenance.dateSoutenance|date('Y-m-d') : '' }}</td>
+            <td>{{ soutenance.note }}</td>
+            <td>
+                {{ include('soutenance/_delete_form.html.twig') }}
+             <a class="btn btn-warning btn-sm" href="{{ path('app_soutenance_edit', {'numjury': soutenance.numjury}) }}">edit</a>
+            </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
